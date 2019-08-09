@@ -1,11 +1,11 @@
 <idea-plugin>
     <id>com.galonsky.copy_as_import</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <name>Copy as Import</name>
+    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">Galonsky LLC</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    Adds a "Copy as Import" option to the right click menu when you right click on a python reference.
+    Copies the import in the "from abc.def import Foo" format
     ]]></description>
 
     <depends>com.intellij.modules.pycharm</depends>

@@ -4,9 +4,9 @@ plugins {
 }
 
 group 'com.galonsky'
-version '1.0'
+version '0.0.1'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.11
 
 repositories {
     mavenCentral()
