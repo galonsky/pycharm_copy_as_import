@@ -24,63 +24,33 @@ import java.util.Collections;
 import java.util.List;
 
 
+// TODO: probably don't need to extend from this anymore
 public class CopyAsImportAction extends CopyReferenceAction {
 
-    // Copy from CopyReferenceUtil.java, which had package private access :/
-    private static PsiElement adjustElement(PsiElement element) {
-        PsiElement adjustedElement = QualifiedNameProviderUtil.adjustElementToCopy(element);
-        return adjustedElement != null ? adjustedElement : element;
+    private final CopyAsImportHelper helper;
+
+    CopyAsImportAction(CopyAsImportHelper helper) {
+        this.helper = helper;
     }
 
-
-    @NotNull
-    // Adapted from CopyReferenceUtil.java
-    private static List<PsiElement> getElementsToCopy(final Editor editor, final DataContext dataContext) {
-        List<PsiElement> elements = new ArrayList<>();
-        PsiReference reference = TargetElementUtil.findReference(editor);
-        if (reference != null) {
-            ContainerUtil.addIfNotNull(elements, reference.getElement());
-        }
-
-        if (elements.isEmpty()) {
-            PsiElement[] psiElements = LangDataKeys.PSI_ELEMENT_ARRAY.getData(dataContext);
-            if (psiElements != null) {
-                Collections.addAll(elements, psiElements);
-            }
-        }
-
-        if (elements.isEmpty()) {
-            ContainerUtil.addIfNotNull(elements, CommonDataKeys.PSI_ELEMENT.getData(dataContext));
-        }
-
-        return ContainerUtil.mapNotNull(elements, element -> element instanceof PsiFile && !((PsiFile)element).getViewProvider().isPhysical()
-                ? null
-                : adjustElement(element));
-    }
-
-    // Copy from CopyReferenceUtil.java, which had package private access :/
-    static void setStatusBarText(Project project, String message) {
-        if (project != null) {
-            final StatusBarEx statusBar = (StatusBarEx) WindowManager.getInstance().getStatusBar(project);
-            if (statusBar != null) {
-                statusBar.setInfo(message);
-            }
-        }
+    public CopyAsImportAction() {
+        this(new CopyAsImportHelper());
     }
 
     @Override
     public void update(@NotNull AnActionEvent e) {
         // TODO more checks here that are done in actionPerformed
         DataContext dataContext = e.getDataContext();
-        Editor editor = CommonDataKeys.EDITOR.getData(dataContext);
-        Project project = CommonDataKeys.PROJECT.getData(dataContext);
+        Editor editor = dataContext.getData(CommonDataKeys.EDITOR);
+        Project project = dataContext.getData(CommonDataKeys.PROJECT);
         // Only interested in elements, not paths for now
         boolean enabled = project != null && editor != null;
         if (!enabled) {
             e.getPresentation().setEnabled(false);
             e.getPresentation().setVisible(false);
+            return;
         }
-        List<PsiElement> elements = getElementsToCopy(editor, dataContext);
+        List<PsiElement> elements = helper.getElementsToCopy(editor, dataContext);
         enabled = elements.size() == 1;
         e.getPresentation().setEnabled(enabled);
         e.getPresentation().setVisible(enabled);
@@ -93,12 +63,12 @@ public class CopyAsImportAction extends CopyReferenceAction {
         System.out.println("copy as import called");
 
         DataContext dataContext = e.getDataContext();
-        Editor editor = CommonDataKeys.EDITOR.getData(dataContext);
-        Project project = CommonDataKeys.PROJECT.getData(dataContext);
+        Editor editor = dataContext.getData(CommonDataKeys.EDITOR);
+        Project project = dataContext.getData(CommonDataKeys.PROJECT);
         if (editor == null || project == null) {
             return;
         }
-        List<PsiElement> elements = getElementsToCopy(editor, dataContext);
+        List<PsiElement> elements = helper.getElementsToCopy(editor, dataContext);
         Preconditions.checkState(elements.size() == 1);
 
         final PsiElement element = elements.get(0);
