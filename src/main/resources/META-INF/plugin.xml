@@ -8,7 +8,7 @@
     Copies the import in the "from abc.def import Foo" format
     ]]></description>
 
-    <depends>com.intellij.modules.pycharm</depends>
+    <depends>com.intellij.modules.python</depends>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->

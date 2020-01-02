@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.9'
+    id 'org.jetbrains.intellij' version '0.4.15'
 }
 
 group 'com.galonsky'
-version '0.0.1'
+version '0.0.2'
 
 sourceCompatibility = 1.11
 
@@ -18,11 +18,15 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2019.2'
+    version '2019.3'
     type 'PY'
+    plugins 'python'
 }
 patchPluginXml {
     changeNotes """
       Add change notes here.<br>
       <em>most HTML tags may be used</em>"""
+
+    sinceBuild '193'
+
 }
