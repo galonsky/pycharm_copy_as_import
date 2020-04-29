@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.galonsky'
-version '0.0.3'
+version '0.0.4'
 
 sourceCompatibility = 1.11
 
@@ -21,12 +21,11 @@ intellij {
     version '2020.1'
     type 'PY'
     plugins 'python'
+    updateSinceUntilBuild false
 }
 patchPluginXml {
     changeNotes """
       Add change notes here.<br>
       <em>most HTML tags may be used</em>"""
-
-    sinceBuild '193'
 
 }
